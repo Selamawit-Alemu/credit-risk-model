@@ -5,7 +5,18 @@ __pycache__/
 
 # C extensions
 *.so
+#project specific
+data/*
+.venv/
+data/raw/               # Raw data never committed
+data/processed/         # Processed data (can recreate from code)
+*.csv                   # Catch-all for data files
+*.parquet
+*.feather
 
+# Environment
+.venv/
+.env
 # Distribution / packaging
 .Python
 build/
