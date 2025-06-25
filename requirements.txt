@@ -1,4 +1,4 @@
-# Core Data Science
+# Core Data Science (Python 3.12+ compatible)
 pandas==2.2.2
 numpy==1.26.4
 scikit-learn==1.5.0
@@ -6,11 +6,11 @@ scikit-learn==1.5.0
 # Visualization
 matplotlib==3.8.4
 seaborn==0.13.2
-plotly==5.18.0  # Interactive visualizations
+plotly==5.18.0
 
-# EDA Tools
-ydata-profiling==4.6.4  # Replacement for pandas-profiling
-missingno==0.5.2  # Missing data visualization
+# Modern EDA Alternatives
+ydata-profiling==4.16.1  # Newest version supporting Python 3.12
+missingno==0.5.2
 
 # Notebook Environment
 jupyter==1.0.0
@@ -20,7 +20,7 @@ ipykernel==6.29.0
 # Model Analysis
 shap==0.45.0
 
-# Testing & CI
+# Testing
 pytest==8.2.1
 pytest-cov==5.0.0
 
