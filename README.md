@@ -188,6 +188,12 @@ pip install -r requirements.txt
 
 You can run the pipeline in a notebook or Python script:
 From a notebook:
+📓 Notebooks
+Notebook	
+# 01-eda.ipynb	
+Performs Exploratory Data Analysis (EDA) on the raw credit transaction data. It includes distribution plots, missing value inspection, feature correlation heatmaps, and customer behavior insights. Helps define the scope of feature engineering.
+# 2.0-feature-engineering.ipynb	
+Demonstrates the use of the automated feature engineering pipeline implemented in src/feature_engineering.py. Applies aggregation, datetime extraction, imputation, encoding, and scaling steps. Outputs a model-ready feature matrix.
 
 # notebooks/2.0-feature-engineering.ipynb
 
