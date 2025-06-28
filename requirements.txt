@@ -26,3 +26,9 @@ pytest-cov==5.0.0
 
 # ML Tracking
 mlflow==2.13.0
+
+# Feature Engineering
+xverse
+category-encoders==2.6.3
+feature-engine==1.7.0
+
