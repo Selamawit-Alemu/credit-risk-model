@@ -74,3 +74,171 @@ graph TD
 
 ---
 
+
+
+📊 Credit Scoring Risk Model – Interim Submission
+🧠 Overview
+
+This project aims to develop a robust credit risk scoring model using transaction-level data. The system is designed to support responsible lending decisions in the absence of direct default labels, relying instead on proxy variables. The pipeline integrates feature engineering, model training, and interpretability techniques, aligned with Basel II regulatory requirements.
+🏦 Regulatory Motivation: Basel II & Model Interpretability
+
+Basel II emphasizes the need for transparent, explainable models for credit risk measurement. Financial institutions must demonstrate:
+
+    The reasoning behind risk predictions
+
+    A clear audit trail for feature transformations
+
+    Sensitivity analysis to understand model behavior under varying inputs
+
+To comply, this project:
+
+    Uses interpretable engineered features (aggregate behavior, transaction time)
+
+    Plans to incorporate SHAP/LIME for post-hoc interpretability
+
+    Maintains modular, documented pipelines for reproducibility and traceability
+
+🧪 Technical Progress
+✅ Exploratory Data Analysis (EDA)
+
+Conducted in notebooks/01-eda.ipynb, covering:
+
+    Distribution of transaction amounts
+
+    Class distribution of categorical variables
+
+    Missing value analysis
+
+    Initial outlier handling
+
+✅ Feature Engineering Pipeline
+
+Implemented in src/feature_engineering.py using sklearn.pipeline.Pipeline and custom transformers:
+
+    Aggregate Features (sum, avg, count, std) per CustomerId
+
+    Datetime Features (hour, day, month, year) from TransactionStartTime
+
+    Missing Value Handling: KNNImputer for numerics, SimpleImputer for categoricals
+
+    Encoding:
+
+        OneHotEncoder for nominal features
+
+        OrdinalEncoder (optional)
+
+    Scaling: StandardScaler for numeric features
+
+📍 Example output shape: Transformed feature shape: (95662, 40)
+🧩 Model Training (Preliminary)
+
+Scripted in src/train.py and callable in later phases. The model will use a proxy variable for risk labels (e.g., spending volatility or inactivity) until actual defaults become available.
+🧪 CI/CD Setup
+
+CI pipeline configured with GitHub Actions:
+
+    .github/
+    ├── workflows/
+    │   └── ci.yml
+
+✅ CI Features:
+
+    Automated linting and testing upon commit
+
+    Ensures pipeline integrity and test reproducibility
+
+📁 Project Structure
+
+    .
+    ├── .github/workflows/ci.yml            # GitHub Actions for CI
+    ├── notebooks/
+    │   ├── 01-eda.ipynb                    # EDA
+    │   └── 2.0-feature-engineering.ipynb  # Pipeline application
+    ├── src/
+    │   ├── api/                            # API setup (placeholder)
+    │   ├── data_processing.py              # Raw data loading / utilities
+    │   ├── feature_engineering.py         # Full feature pipeline
+    │   ├── predict.py                      # Inference script
+    │   └── train.py                        # Training pipeline
+    ├── tests/                              # Unit tests
+    ├── requirements.txt
+    ├── README.md
+
+
+🛠️ How to Run This Project
+
+Follow the steps below to set up and run the pipeline end-to-end.
+✅ 1. Clone the Repository
+
+    git clone https://github.com/your-username/credit-scoring-risk-model.git
+    cd credit-scoring-risk-model
+
+✅ 2. Create and Activate a Virtual Environment
+
+    python -m venv .venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+✅ 3. Install Dependencies
+
+pip install -r requirements.txt
+
+    📦 Includes: scikit-learn, pandas, xverse, matplotlib, seaborn, jupyter, etc.
+
+✅ 4. Run the Feature Engineering Pipeline
+
+You can run the pipeline in a notebook or Python script:
+From a notebook:
+
+# notebooks/2.0-feature-engineering.ipynb
+
+    from src.feature_engineering import get_feature_engineering_pipeline
+    import pandas as pd
+
+    df = pd.read_csv("data/raw/data.csv")
+    pipeline = get_feature_engineering_pipeline()
+    X_transformed = pipeline.fit_transform(df)
+
+From a script:
+
+python src/train.py
+
+✅ 5. Run Unit Tests
+
+pytest tests/
+
+    🧪 Make sure all components work correctly before deployment.
+
+✅ 6. CI/CD on GitHub
+
+Every push triggers the CI workflow defined in .github/workflows/ci.yml. This:
+
+    Installs dependencies
+
+    Runs tests
+
+    Checks pipeline consistency
+
+
+📌 Next Steps
+
+    Model Selection & Training
+
+        Train baseline classifiers using the transformed data
+
+        Evaluate with F1 and AUC scores
+
+    Interpretability (Task 4/5)
+
+        Integrate SHAP or LIME explanations
+
+        Link feature importance to business context (e.g., high transaction volume → low risk)
+
+    Micro-Lending Scorecard (Task 6)
+
+        Build a vendor analytics engine to support lending decisions
+
+    Optional:
+
+        Incorporate Weight of Evidence (WOE) and Information Value (IV)
+
+        Add Dockerfile and deployable FastAPI service
