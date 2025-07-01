@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      # --- ADD THIS LINE ---
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+      # ---------------------
+    restart: unless-stopped

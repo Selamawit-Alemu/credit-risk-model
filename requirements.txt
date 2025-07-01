@@ -32,3 +32,8 @@ xverse
 category-encoders==2.6.3
 feature-engine==1.7.0
 
+fastapi
+uvicorn
+pydantic
+joblib
+flake8

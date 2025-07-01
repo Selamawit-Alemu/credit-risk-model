@@ -3,14 +3,12 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, roc_auc_score
-from sklearn.pipeline import Pipeline
 import mlflow
 import mlflow.sklearn
+import joblib
 
-# Correct imports for feature engineering and preprocessing pipeline
+# Import your feature engineering pipeline and proxy target functions
 from feature_engineering import get_feature_engineering_pipeline
-
-# Add missing imports for proxy target variable creation (RFM)
 from proxy_target import calculate_rfm, scale_rfm, perform_kmeans_clustering
 
 # ---------------- Load and Preprocess Data ----------------
@@ -33,10 +31,16 @@ y = df["is_high_risk"]
 
 # ---------------- Full Feature Engineering and Preprocessing Pipeline ----------------
 full_pipeline = get_feature_engineering_pipeline()
-X_processed = full_pipeline.fit_transform(X)
 
 # ---------------- Train-Test Split ----------------
-X_train, X_test, y_train, y_test = train_test_split(X_processed, y, test_size=0.2, random_state=42)
+X_train_raw, X_test_raw, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Fit pipeline on training data only to avoid data leakage
+X_train = full_pipeline.fit_transform(X_train_raw)
+X_test = full_pipeline.transform(X_test_raw)
+
+# Save the fitted preprocessing pipeline for later use in the API
+joblib.dump(full_pipeline, "preprocessing_pipeline.pkl")
 
 # ---------------- MLflow Tracking ----------------
 mlflow.set_experiment("credit-risk-model")
@@ -74,10 +78,9 @@ with mlflow.start_run():
     print("\n📊 Logistic Regression")
     print(classification_report(y_test, y_pred_lr))
     print("ROC AUC:", roc_auc_lr)
-    
+
+# Register the best RF model as a new production version
 with mlflow.start_run():
-    # ... after training and logging model ...
-    
     mlflow.sklearn.log_model(best_rf, "random_forest_model")
     
     model_uri = f"runs:/{mlflow.active_run().info.run_id}/random_forest_model"
