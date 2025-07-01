@@ -13,7 +13,7 @@ data/processed/         # Processed data (can recreate from code)
 *.csv                   # Catch-all for data files
 *.parquet
 *.feather
-
+mlruns/
 # Environment
 .venv/
 .env
