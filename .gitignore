@@ -17,6 +17,7 @@ mlruns/
 # Environment
 .venv/
 .env
+*.pkl
 # Distribution / packaging
 .Python
 build/
