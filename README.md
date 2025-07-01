@@ -150,19 +150,24 @@ CI pipeline configured with GitHub Actions:
 📁 Project Structure
 
     .
-    ├── .github/workflows/ci.yml            # GitHub Actions for CI
-    ├── notebooks/
-    │   ├── 01-eda.ipynb                    # EDA
-    │   └── 2.0-feature-engineering.ipynb  # Pipeline application
-    ├── src/
-    │   ├── api/                            # API setup (placeholder)
-    │   ├── data_processing.py              # Raw data loading / utilities
-    │   ├── feature_engineering.py         # Full feature pipeline
-    │   ├── predict.py                      # Inference script
-    │   └── train.py                        # Training pipeline
-    ├── tests/                              # Unit tests
-    ├── requirements.txt
-    ├── README.md
+├── .github/workflows/ci.yml            # CI/CD pipeline config
+├── notebooks/
+│   ├── 01-eda.ipynb                    # Exploratory Data Analysis
+│   └── 2.0-feature-engineering.ipynb  # Feature pipeline demo
+├── src/
+│   ├── api/                            # FastAPI inference API
+│   ├── feature_engineering.py          # Feature engineering pipeline
+│   ├── train.py                        # Model training pipeline
+│   ├── proxy_target.py                 # Proxy label creation logic
+│   └── data_processing.py              # Data loading utilities
+├── tests/                              # Unit tests
+├── models/                             # Pickled models and pipelines
+├── requirements.txt
+├── Dockerfile                         # Containerization config
+├── docker-compose.yml                 # Docker compose config
+├── mlruns/                           # MLflow tracking server data
+└── README.md
+
 
 
 🛠️ How to Run This Project
@@ -207,14 +212,36 @@ notebooks/2.0-feature-engineering.ipynb
 
 From a script:
 
-python src/train.py
+    python src/train.py
+Run Feature Engineering Pipeline
+From a notebook (notebooks/2.0-feature-engineering.ipynb) or script:
 
+    python
+    Copy code
+    from src.feature_engineering import get_feature_engineering_pipeline
+    import pandas as pd
+
+    df = pd.read_csv("data/raw/data.csv")
+    pipeline = get_feature_engineering_pipeline()
+    X_transformed = pipeline.fit_transform(df)
+    print(X_transformed.shape)
+Or simply run:
+
+    bash
+    Copy code
+    python src/train.py
 ✅ 5. Run Unit Tests
 
 pytest tests/
 
     🧪 Make sure all components work correctly before deployment.
 
+Run the API (local)
+bash
+    Copy code
+    docker-compose up --build
+Access API docs at:
+        http://localhost:8000/docs
 ✅ 6. CI/CD on GitHub
 
 Every push triggers the CI workflow defined in .github/workflows/ci.yml. This:
@@ -226,26 +253,3 @@ Every push triggers the CI workflow defined in .github/workflows/ci.yml. This:
     Checks pipeline consistency
 
 
-📌 Next Steps
-
-    Model Selection & Training
-
-        Train baseline classifiers using the transformed data
-
-        Evaluate with F1 and AUC scores
-
-    Interpretability (Task 4/5)
-
-        Integrate SHAP or LIME explanations
-
-        Link feature importance to business context (e.g., high transaction volume → low risk)
-
-    Micro-Lending Scorecard (Task 6)
-
-        Build a vendor analytics engine to support lending decisions
-
-    Optional:
-
-        Incorporate Weight of Evidence (WOE) and Information Value (IV)
-
-        Add Dockerfile and deployable FastAPI service

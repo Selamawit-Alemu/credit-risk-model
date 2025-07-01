@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 class AggregateFeatures(BaseEstimator, TransformerMixin):
     def __init__(self, group_col='CustomerId', agg_col='Amount'):
