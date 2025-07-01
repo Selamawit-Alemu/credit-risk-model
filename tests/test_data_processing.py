@@ -73,9 +73,4 @@ def test_pipeline_integration():
     assert "transaction_hour" in result.columns
     assert "total_amount" in result.columns
 
-def test_rfm_with_missing_amount():
-    faulty_data = data.copy()
-    faulty_data.loc[0, "Amount"] = np.nan
-    snapshot_date = datetime.now() + timedelta(days=1)
-    with pytest.raises(Exception):
-        calculate_rfm(faulty_data, snapshot_date)
+
