@@ -236,7 +236,64 @@ pytest tests/
 
     🧪 Make sure all components work correctly before deployment.
 
-Run the API (local)
+## Run the API (local)
+
+API Usage
+Running the FastAPI Service Locally
+Make sure you have your virtual environment activated and dependencies installed. Then start the API server with:
+
+bash
+Copy code
+    uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+The API will be accessible at:
+http://localhost:8000
+
+Health Check Endpoint
+Verify the API is running:
+
+bash
+Copy code
+    curl http://localhost:8000/
+Expected response:
+
+json
+Copy code
+    {
+    "status": "OK",
+    "message": "Credit Risk API is running 🚀"
+    }
+
+Prediction Endpoint
+Send a POST request with JSON input to get a credit risk prediction:
+
+bash
+Copy code
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Amount": 150,
+    "PricingStrategy": 2,
+    "transaction_hour": 13,
+    "transaction_day": 14,
+    "transaction_month": 7,
+    "transaction_year": 2024,
+    "total_amount": 1200,
+    "avg_amount": 300,
+    "count_transactions": 4,
+    "std_amount": 45.8,
+    "ProductCategory": "Electronics",
+    "ChannelId": "Mobile",
+    "ProviderId": "ProviderA"
+  }'
+Example response:
+
+json
+    Copy code
+    {
+    "is_high_risk": 1,
+    "risk_probability": 0.501
+    }
+
 bash
     Copy code
     docker-compose up --build
